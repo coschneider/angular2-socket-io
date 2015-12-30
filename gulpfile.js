@@ -37,6 +37,7 @@ gulp.task(clean);
 
 gulp.task('build', gulp.series(
 	clean,
+  tsd,
 	gulp.parallel(scss, ts),
 	assets,
 	index,
@@ -100,6 +101,10 @@ var tsProject = plugins.typescript.createProject('tsconfig.json', {
 	typescript: require('typescript'),
 	outFile: env.isProd ? 'app.js' : undefined
 });
+
+function tsd() {
+  return gulp.src('./gulp.tsd.json').pipe(plugins.tsd());
+}
 
 function ts() {
 	var tsResult = gulp.src('demo/**/*.ts')
