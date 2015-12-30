@@ -14,6 +14,8 @@ var del = require('del'),
 	webdriver = require('gulp-protractor').webdriver_update,
 	remapIstanbul = require('remap-istanbul/lib/gulpRemapIstanbul');
 
+var nodemon = require('gulp-nodemon');
+
 var paths = require('./gulpfile.paths.js');
 
 process.env.NODE_ENV = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
@@ -43,6 +45,14 @@ gulp.task('build', gulp.series(
 	index,
 	typedoc
 ));
+
+gulp.task('serveio', function () {
+  nodemon({ script: 'backend/app.js', ext: 'html js' })
+    .on('restart', function () {
+      console.log('restarted!')
+    })
+})
+
 
 gulp.task('serve', gulp.series(
 	gulp.parallel(watch, livereload)
@@ -169,7 +179,7 @@ function karmaTs(root) {
 
 	var caller = arguments.callee.caller.name;
 
-	var tsResult = gulp.src(path.join(root, '/**/*.ts'))
+	var tsResult = gulp.src(path.join(root, 'demo/**/*.ts'))
 		.pipe(plugins.preprocess({ context: env }))
 		.pipe(plugins.inlineNg2Template({ base: root }))
 		.pipe(plugins.sourcemaps.init())
