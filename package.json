@@ -20,5 +20,23 @@
   "bugs": {
     "url": "https://github.com/coschneider/angular2-socket-io/issues"
   },
-  "homepage": "https://github.com/coschneider/angular2-socket-io#readme"
+  "homepage": "https://github.com/coschneider/angular2-socket-io#readme",
+  "dependencies": {
+    "angular2": "^2.0.0-beta.0",
+    "bootstrap": "^3.3.6",
+    "es6-promise": "^3.0.2",
+    "es6-shim": "^0.33.13",
+    "reflect-metadata": "^0.1.2",
+    "rxjs": "^5.0.0-beta.0",
+    "systemjs": "^0.19.9",
+    "zone.js": "^0.5.10"
+  },
+  "devDependencies": {
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-tslint": "^4.2.2",
+    "gulp-typescript": "^2.10.0",
+    "tsd": "^0.6.5",
+    "tslint": "^3.2.1",
+    "typescript": "^1.7.5"
+  }
 }
