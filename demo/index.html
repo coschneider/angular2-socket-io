@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title><%= APP_TITLE %></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- inject:js -->
+	<!-- endinject -->
+
+	<!-- inject:css -->
+	<!-- endinject -->
+
+</head>
+<body>
+
+  <app>Loading...</app>
+
+    <script>
+        <!-- @if isDev -->
+        System
+            .config({
+                packages: { 'js': { defaultExtension: 'js' } }
+            });
+        System
+            .import('js/bootstrap.js')
+            .catch(console.error.bind(console));
+        <!-- @endif -->
+        
+        <!-- @if isProd -->
+        System
+            .config({
+                bundles: { 'js/bootstrap.js': ['bootstrap'] }
+            });
+        System
+            .import('bootstrap')
+        .catch(function (e) {
+        console.error(e,
+            'Report this error at https://github.com/coschneider/angular2-socket-io/issues');
+        });
+        <!-- @endif -->
+    </script>
+
+</body>
+</html>
