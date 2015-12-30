@@ -48,8 +48,9 @@ gulp.task('build', gulp.series(
 
 gulp.task('serveio', function () {
   nodemon({ script: 'backend/app.js', ext: 'html js' })
-    .on('restart', function () {
-      console.log('restarted!')
+    .on('start', function () {
+      watch();
+      console.log('started!')
     })
 })
 
@@ -246,10 +247,11 @@ function protractorRun() {
 }
 
 function watch() {
-	gulp.watch('src/scripts/**/*.{ts,css,html}', gulp.series(ts, 'unit'));
-	gulp.watch('src/scss/**/*.scss', scss);
-	gulp.watch('src/index.html', index);
-	gulp.watch('test/unit/**/*.ts', gulp.series('unit'));
+	gulp.watch('demo/**/*.{ts,css,html}', gulp.series(ts));
+	//gulp.watch('demo/**/*.{ts,css,html}', gulp.series(ts, 'unit'));
+	gulp.watch('demo/scss/**/*.scss', scss);
+	gulp.watch('demo/index.html', index);
+	//gulp.watch('test/unit/**/*.ts', gulp.series('unit'));
 }
 
 function livereload() {

@@ -16,7 +16,6 @@ export class HomeCmp {
  */
   connect(): boolean {
     
-   
     var socket = io.connect();
 
     socket.on('connect', () => { console.log('we are connected!'); });
