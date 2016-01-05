@@ -39,7 +39,6 @@ gulp.task(clean);
 
 gulp.task('build', gulp.series(
 	clean,
-  tsd,
 	gulp.parallel(scss, ts),
 	assets,
 	index,
@@ -85,7 +84,7 @@ function clean() {
 }
 
 function scss() {
-	return gulp.src('demo/**/*.{scss,sass}', { base: 'demo/scss' })
+	return gulp.src('src/**/*.{scss,sass}', { base: 'src/scss' })
 		.pipe(plugins.sassLint({ config: '.sass-lint.yml' }))
 		.pipe(plugins.sassLint.format())
 		.pipe(plugins.sassLint.failOnError())
@@ -99,7 +98,7 @@ function scss() {
 }
 
 function typedoc() {
-	return gulp.src('demo/**/*.ts')
+	return gulp.src('src/**/*.ts')
 		.pipe(plugins.typedoc({
 			module: 'commonjs',
 			target: 'es5',
@@ -113,23 +112,19 @@ var tsProject = plugins.typescript.createProject('tsconfig.json', {
 	outFile: env.isProd ? 'app.js' : undefined
 });
 
-function tsd() {
-  return gulp.src('./gulp.tsd.json').pipe(plugins.tsd());
-}
-
 function ts() {
-	var tsResult = gulp.src('demo/**/*.ts')
+	var tsResult = gulp.src('src/**/*.ts')
 		.pipe(plugins.tslint())
 		.pipe(plugins.tslint.report('verbose'))
 		.pipe(plugins.preprocess({ context: env }))
-		.pipe(plugins.inlineNg2Template({ base: 'demo' }))
+		.pipe(plugins.inlineNg2Template({ base: 'src' }))
 		.pipe(plugins.if(env.isDev, plugins.sourcemaps.init()))
 		.pipe(plugins.typescript(tsProject));
 
 	return tsResult.js
 		.pipe(plugins.if(env.isProd, plugins.uglify()))
 		.pipe(plugins.if(env.isDev, plugins.sourcemaps.write({
-			sourceRoot: path.join(__dirname, '/demo')
+			sourceRoot: path.join(__dirname, '/src')
 		})))
 		.pipe(plugins.size({ title: 'ts' }))
 		.pipe(gulp.dest('build/js'))
@@ -137,11 +132,11 @@ function ts() {
 }
 
 function assets() {
-	var images = gulp.src('demo/images/**/*.{png,jpg,gif}')
+	var images = gulp.src('src/images/**/*.{png,jpg,gif}')
 		.pipe(plugins.size({ title: 'images' }))
 		.pipe(gulp.dest('build/images'));
 
-	var fonts = gulp.src('demo/fonts/**/*.{eot,ttf,otf,woff}')
+	var fonts = gulp.src('src/fonts/**/*.{eot,ttf,otf,woff}')
 		.pipe(plugins.size({ title: 'fonts' }))
 		.pipe(gulp.dest('build/fonts'));
 
@@ -162,7 +157,7 @@ function index() {
 
 	var source = gulp.src([].concat(css, libs), { read: false });
 
-	return gulp.src('demo/index.html')
+	return gulp.src('src/index.html')
 		.pipe(plugins.inject(source, { ignorePath: 'build' }))
 		.pipe(plugins.preprocess({ context: env }))
 		.pipe(gulp.dest('build'))
@@ -180,7 +175,7 @@ function karmaTs(root) {
 
 	var caller = arguments.callee.caller.name;
 
-	var tsResult = gulp.src(path.join(root, 'demo/**/*.ts'))
+	var tsResult = gulp.src(path.join(root, 'src/**/*.ts'))
 		.pipe(plugins.preprocess({ context: env }))
 		.pipe(plugins.inlineNg2Template({ base: root }))
 		.pipe(plugins.sourcemaps.init())
@@ -247,10 +242,10 @@ function protractorRun() {
 }
 
 function watch() {
-	gulp.watch('demo/**/*.{ts,css,html}', gulp.series(ts));
-	//gulp.watch('demo/**/*.{ts,css,html}', gulp.series(ts, 'unit'));
-	gulp.watch('demo/scss/**/*.scss', scss);
-	gulp.watch('demo/index.html', index);
+	gulp.watch('src/**/*.{ts,css,html}', gulp.series(ts));
+	//gulp.watch('src/**/*.{ts,css,html}', gulp.series(ts, 'unit'));
+	gulp.watch('src/scss/**/*.scss', scss);
+	gulp.watch('src/index.html', index);
 	//gulp.watch('test/unit/**/*.ts', gulp.series('unit'));
 }
 
